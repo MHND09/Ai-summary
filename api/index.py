@@ -17,6 +17,18 @@ llm = ChatGoogleGenerativeAI(
 
 @app.route('/api/summarize', methods=['POST'])
 def summarize_image():
+    """
+    Summarize the content visible on a whiteboard in an image.
+    
+    Expects a JSON payload with:
+    - imageUrl (string): URL of the image to analyze
+    
+    Returns:
+    - JSON with 'summary' field containing a brief description of the whiteboard content
+    - The summary starts with 'The whiteboard shows a:' and is limited to 50 words
+    - Returns error 400 if imageUrl is missing
+    - Returns error 500 if processing fails
+    """
     data = request.get_json()
     image_url = data.get('imageUrl')
 
@@ -49,6 +61,18 @@ def summarize_image():
 
 @app.route('/api/extract-table', methods=['POST'])
 def extract_table():
+    """
+    Extract and format content from a whiteboard image, preserving structure.
+    
+    Expects a JSON payload with:
+    - imageUrl (string): URL of the image to analyze
+    
+    Returns:
+    - JSON with 'tableContent' field containing the extracted and formatted content
+    - Returns 'No content detected in the image' if no content is visible
+    - Returns error 400 if imageUrl is missing
+    - Returns error 500 if processing fails
+    """
     data = request.get_json()
     image_url = data.get('imageUrl')
 
@@ -81,6 +105,20 @@ def extract_table():
 
 @app.route('/api/classify', methods=['POST'])
 def classify_content():
+    """
+    Classify content by assigning the most appropriate labels from a given list.
+    
+    Expects a JSON payload with:
+    - content (string): The text content to classify
+    - availableLabels (list): A list of possible labels to choose from
+    
+    Returns:
+    - JSON with 'labels' field containing a list of assigned labels
+    - Only returns labels that are in the provided availableLabels list
+    - Returns an empty list if no labels are relevant
+    - Returns error 400 if content or availableLabels is missing
+    - Returns error 500 if processing fails
+    """
     data = request.get_json()
     content = data.get('content')
     available_labels = data.get('availableLabels', [])
