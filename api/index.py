@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 import os
 from flask_cors import CORS 
+import pathlib
 
 app = Flask(__name__)
 CORS(app) 
@@ -14,6 +15,12 @@ llm = ChatGoogleGenerativeAI(
     timeout=None,
     max_retries=2,
 )
+
+@app.route('/')
+def documentation():
+    """Serve the API documentation HTML page."""
+    doc_path = pathlib.Path(__file__).parent / "documentation.html"
+    return send_file(doc_path)
 
 @app.route('/api/summarize', methods=['POST'])
 def summarize_image():

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Summary API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+        .endpoint {
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+            background-color: #27ae60;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background-color: #f1f1f1;
+            padding: 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI-Summary API Documentation</h1>
+    <p>
+        This documentation provides details about the available endpoints in the AI-Summary API, 
+        which uses Google's Generative AI to process and analyze images and text content.
+    </p>
+
+    <div class="endpoint">
+        <h2>Summarize Whiteboard Image</h2>
+        <span class="method">POST</span>
+        <span class="url">/api/summarize</span>
+        
+        <h3>Description</h3>
+        <p>Analyzes an image of a whiteboard and provides a concise summary of its content.</p>
+        
+        <h3>Request</h3>
+        <p>Expects a JSON payload with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>imageUrl</td>
+                <td>String</td>
+                <td>URL of the whiteboard image to analyze</td>
+                <td>Yes</td>
+            </tr>
+        </table>
+        
+        <h3>Example Request</h3>
+        <pre><code>{
+    "imageUrl": "https://example.com/whiteboard-image.jpg"
+}</code></pre>
+        
+        <h3>Response</h3>
+        <p>Returns a JSON object with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>summary</td>
+                <td>String</td>
+                <td>A brief description of what's on the whiteboard (limited to 50 words)</td>
+            </tr>
+        </table>
+        
+        <h3>Example Response</h3>
+        <pre><code>{
+    "summary": "The whiteboard shows a: flowchart of a user authentication process with login, registration, and password recovery paths, including database interactions and security validation steps."
+}</code></pre>
+        
+        <h3>Error Responses</h3>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>400</td>
+                <td>Missing imageUrl in request</td>
+            </tr>
+            <tr>
+                <td>500</td>
+                <td>Unable to generate summary due to server error</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="endpoint">
+        <h2>Extract Table from Whiteboard Image</h2>
+        <span class="method">POST</span>
+        <span class="url">/api/extract-table</span>
+        
+        <h3>Description</h3>
+        <p>Extracts and formats content from a whiteboard image, preserving the structure and formatting.</p>
+        
+        <h3>Request</h3>
+        <p>Expects a JSON payload with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>imageUrl</td>
+                <td>String</td>
+                <td>URL of the whiteboard image to extract content from</td>
+                <td>Yes</td>
+            </tr>
+        </table>
+        
+        <h3>Example Request</h3>
+        <pre><code>{
+    "imageUrl": "https://example.com/whiteboard-table-image.jpg"
+}</code></pre>
+        
+        <h3>Response</h3>
+        <p>Returns a JSON object with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>tableContent</td>
+                <td>String</td>
+                <td>The extracted content with original formatting preserved</td>
+            </tr>
+        </table>
+        
+        <h3>Example Response</h3>
+        <pre><code>{
+    "tableContent": "Project Timeline\n\nPhase 1: Research | Jan - Feb\nPhase 2: Development | Mar - May\nPhase 3: Testing | Jun - Jul\nPhase 4: Deployment | Aug"
+}</code></pre>
+        
+        <h3>Error Responses</h3>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>400</td>
+                <td>Missing imageUrl in request</td>
+            </tr>
+            <tr>
+                <td>500</td>
+                <td>Unable to extract table content due to server error</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="endpoint">
+        <h2>Classify Content</h2>
+        <span class="method">POST</span>
+        <span class="url">/api/classify</span>
+        
+        <h3>Description</h3>
+        <p>Classifies text content by assigning the most appropriate labels from a provided list.</p>
+        
+        <h3>Request</h3>
+        <p>Expects a JSON payload with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+            </tr>
+            <tr>
+                <td>content</td>
+                <td>String</td>
+                <td>The text content to classify</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td>availableLabels</td>
+                <td>Array of Strings</td>
+                <td>List of possible labels to choose from</td>
+                <td>Yes</td>
+            </tr>
+        </table>
+        
+        <h3>Example Request</h3>
+        <pre><code>{
+    "content": "A study on the effects of climate change on polar bear populations in the Arctic",
+    "availableLabels": ["Science", "Environment", "Politics", "Technology", "Health", "Education"]
+}</code></pre>
+        
+        <h3>Response</h3>
+        <p>Returns a JSON object with the following fields:</p>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>labels</td>
+                <td>Array of Strings</td>
+                <td>List of relevant labels assigned to the content</td>
+            </tr>
+        </table>
+        
+        <h3>Example Response</h3>
+        <pre><code>{
+    "labels": ["Science", "Environment"]
+}</code></pre>
+        
+        <h3>Error Responses</h3>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>400</td>
+                <td>Missing content or availableLabels in request</td>
+            </tr>
+            <tr>
+                <td>500</td>
+                <td>Unable to classify content due to server error</td>
+            </tr>
+        </table>
+    </div>
+
+    <footer style="margin-top: 50px; text-align: center; color: #7f8c8d; font-size: 0.9em;">
+        <p>AI-Summary API &copy; 2025 MHND09 | <a href="https://github.com/MHND09/Ai-summary">GitHub Repository</a></p>
+    </footer>
+</body>
+</html>
